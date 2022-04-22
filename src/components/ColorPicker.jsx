@@ -64,6 +64,7 @@ const ColorPicker = ({
                          renderInput,
                          hideTextfield,
                          disablePlainColor,
+                         flexPositionObject,
                      }) => {
     const classes = useStyles();
     const refPicker = useRef(null);
@@ -142,24 +143,48 @@ const ColorPicker = ({
                 {color.raw}
             </div>
         ) : (
-            renderInput({color: "primary", value:color.raw, onChange: handleChange, "data-testid": "colorpicker-input"})
+            renderInput({
+                color: "primary",
+                value: color.raw,
+                onChange: handleChange,
+                "data-testid": "colorpicker-input"
+            })
         );
     }
+    if (!flexPositionObject) {
+        return (
+            <StylesProvider generateClassName={generateClassName}>
+                <div ref={refPicker} className={classes.root}>
+                    <ColorButton
 
-    return (
-        <StylesProvider generateClassName={generateClassName}>
-            <div ref={refPicker} className={classes.root}>
-                <ColorButton
-                    data-testid="colorpicker-button"
-                    className={`muicc-colorpicker-button ${classes.colorpickerButton}`}
-                    color={color}
-                    onClick={handleClick}
-                />
-                {textField}
-                {box}
-            </div>
-        </StylesProvider>
-    );
+                        data-testid="colorpicker-button"
+                        className={`muicc-colorpicker-button ${classes.colorpickerButton}`}
+                        color={color}
+                        onClick={handleClick}
+                    />
+                    {textField}
+                    {box}
+                </div>
+            </StylesProvider>
+        )
+    } else {
+        return (
+            <StylesProvider generateClassName={generateClassName}>
+                <div style={flexPositionObject.outer} ref={refPicker} className={classes.root}>
+                    <div style={flexPositionObject.left}>
+                        <ColorButton
+                            data-testid="colorpicker-button"
+                            className={`muicc-colorpicker-button ${classes.colorpickerButton}`}
+                            color={color}
+                            onClick={handleClick}
+                        />
+                    </div>
+                    <div style={flexPositionObject.middle}>{textField}</div>
+                    <div style={flexPositionObject.right}>{box}</div>
+                </div>
+            </StylesProvider>
+        )
+    }
 };
 
 ColorPicker.propTypes = {
