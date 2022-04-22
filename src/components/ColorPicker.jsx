@@ -142,7 +142,7 @@ const ColorPicker = ({
                 {color.raw}
             </div>
         ) : (
-            renderInput({color: "primary", onChange: handleChange, "data-testid": "colorpicker-input"})
+            renderInput({color: "primary", value:color.raw, onChange: handleChange, "data-testid": "colorpicker-input"})
         );
     }
 
